@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM서빙</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>무엇이든 물어보세요!</h1>
+        <div class="input-container">
+            <input type="text" id="question" required>
+            <button id="get-answer-btn">답변 받기</button>
+        </div>
+
+        <!-- 로딩 중 메시지 -->
+        <div id="loading" style="display: none;">
+            <p>로딩 중...</p>
+        </div>
+
+        <!-- API 결과를 업데이트할 div -->
+        <div id="answer">
+            <h2>답변:</h2>
+            <p id="answer-text"></p>
+        </div>
+    </div>
+
+    <script>
+        $("#get-answer-btn").click(function() {
+            var question = $("#question").val();
+            // 로딩 중 메시지 표시
+            $("#loading").show();
+            // API 요청 
+            $.post("/model_output", { question: question }, function(data) {
+                $("#answer-text").text(data.answer);
+                $("#loading").hide();
+            });
+        });
+    </script>
+</body>
+</html>
